@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ankur Bhagwath</title>
+    <link>/</link>
+    <description>Recent content on Ankur Bhagwath</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 06 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Part 4 of our series on the agonizing pain I live in every day</title>
+      <link>/blog/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-day/</link>
+      <pubDate>Fri, 06 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-day/</guid>
+      <description>Blog PostThis is Moleman in the morning. Good moleman to you.
+</description>
+    </item>
+    
+    <item>
+      <title>Part 4 of our series on the agonizing pain I live in every day</title>
+      <link>/2019/12/06/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-day/</link>
+      <pubDate>Fri, 06 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/06/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-day/</guid>
+      <description>Blog Post#This is Moleman in the morning. Good moleman to you.
+</description>
+    </item>
+    
+    <item>
+      <title>Project 1 Report</title>
+      <link>/project_1_report/</link>
+      <pubDate>Mon, 23 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project_1_report/</guid>
+      <description>Analysis and Comparison of Partisan Lean of US Representatives and House LegislationAnkur Bhagwath, EID asb3477MW 1-230IntroductionThe datasets I have chosen contain data about all 435 members of the current 116th House of Representatives (elected 2018). The partisan leans of each of these representatives was determined through their DW-Nominate score, an objective metric developed by political scientists at UCLA. This places all representatives on a scale from -1 to 1, with more negative scores being more liberal and more positive scores being more conservative.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
+      
+      <guid>/projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hello R Markdown</title>
+      <link>/blog/2015-07-23-r-rmarkdown/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/blog/2015-07-23-r-rmarkdown/</guid>
+      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+You can embed an R code chunk like this:
+summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Wed, 25 Dec 1991 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>Projects PageExploratory Data Analysis of US Partisanship
+Project 2
+</description>
+    </item>
+    
+    <item>
+      <title>Project 2: Modeling, Testing, and Predicting</title>
+      <link>/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project2/</guid>
+      <description>Ankur Bhagwath, EID asb34770. (5 pts) Introduce your dataset and each of your variables (or just your main variables if you have lots) in a paragraph.
+census &amp;lt;- read.csv(&amp;#39;Proj_2_Data.csv&amp;#39;)colnames(census)[1] &amp;lt;- &amp;quot;Age&amp;quot;head(census, 3)## Age Job ID Education Edunum Marital Occupation## 1 39 State-gov 77516 Bachelors 13 Never-marriedAdm-clerical## 2 50 Self-emp-not-inc 83311 Bachelors 13Married-civ-spouse Exec-managerial## 3 38 Private 215646 HS-grad 9 Divorced Handlers-cleaners## Relation Race Sex Cap_Gain Cap_Loss Hours_week CountryIncome## 1 Not-in-family White Male 2174 0 40 United-States &amp;lt;=50K## 2 Husband White Male 0 0 13 United-States &amp;lt;=50K## 3 Not-in-family White Male 0 0 40 United-States &amp;lt;=50KThe dataset is a sample of 32,561 people across the country whose census data was taken in 1994.</description>
+    </item>
+    
+  </channel>
+</rss>

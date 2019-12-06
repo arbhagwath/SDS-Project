@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ankur Bhagwath" />
+    <meta name="description" content="Hi">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project 2: Modeling, Testing, and Predicting</title>
+    <meta name="generator" content="Hugo 0.60.1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project2/">Project 2: Modeling, Testing, and Predicting</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="ankur-bhagwath-eid-asb3477" class="section level2">
+<h2>Ankur Bhagwath, EID asb3477</h2>
+<p><strong>0. (5 pts)</strong> Introduce your dataset and each of your variables (or just your main variables if you have lots) in a paragraph.</p>
+<pre class="r"><code>census &lt;- read.csv(&#39;Proj_2_Data.csv&#39;)
+colnames(census)[1] &lt;- &quot;Age&quot;
+head(census, 3)</code></pre>
+<pre><code>## Age Job ID Education Edunum Marital Occupation
+## 1 39 State-gov 77516 Bachelors 13 Never-married
+Adm-clerical
+## 2 50 Self-emp-not-inc 83311 Bachelors 13
+Married-civ-spouse Exec-managerial
+## 3 38 Private 215646 HS-grad 9 Divorced Handlers-cleaners
+## Relation Race Sex Cap_Gain Cap_Loss Hours_week Country
+Income
+## 1 Not-in-family White Male 2174 0 40 United-States &lt;=50K
+## 2 Husband White Male 0 0 13 United-States &lt;=50K
+## 3 Not-in-family White Male 0 0 40 United-States &lt;=50K</code></pre>
+<p>The dataset is a sample of 32,561 people across the country whose census data was taken in 1994. Each person corresponds to one entry. Numeric variables include age, highest grade level completed, capital gains, capital losses, and hours worked per week. Categorical variables include Job type (Public/Private, etc), Education (High school, College, etc), Marital Status, Occupation (field of work), Role in Family (Husband, Wife, etc), Race, Sex, Country of Origin, and Income strata (binomial, less or greater than $50,000)</p>
+<p><strong>1. (15 pts)</strong></p>
+<pre class="r"><code>m1 &lt;- manova(cbind(Edunum, Cap_Gain, Cap_Loss, Hours_week) ~ Race, data = census)
+summary(m1) </code></pre>
+<pre><code>## Df Pillai approx F num Df den Df Pr(&gt;F)
+## Race 4 0.014552 29.717 16 130224 &lt; 2.2e-16 ***
+## Residuals 32556
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(m1)</code></pre>
+<pre><code>## Response Edunum :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Race 4 2591 647.78 99.048 &lt; 2.2e-16 ***
+## Residuals 32556 212920 6.54
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response Cap_Gain :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Race 4 9.7328e+08 243318824 4.463 0.001322 **
+## Residuals 32556 1.7749e+12 54519345
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response Cap_Loss :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Race 4 3771416 942854 5.81 0.0001138 ***
+## Residuals 32556 5283221679 162281
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response Hours_week :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Race 4 14842 3710.5 24.408 &lt; 2.2e-16 ***
+## Residuals 32556 4949223 152.0
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>pairwise.t.test(census$Edunum, census$Race, p.adj = &#39;none&#39;)</code></pre>
+<pre><code>##
+## Pairwise comparisons using t tests with pooled SD
+##
+## data: census$Edunum and census$Race
+##
+## Amer-Indian-Eskimo Asian-Pac-Islander Black Other
+## Asian-Pac-Islander &lt; 2e-16 - - -
+## Black 0.252 &lt; 2e-16 - -
+## Other 0.027 &lt; 2e-16 6.8e-05 -
+## White 1.7e-08 &lt; 2e-16 &lt; 2e-16 &lt; 2e-16
+##
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(census$Cap_Gain, census$Race, p.adj = &#39;none&#39;)</code></pre>
+<pre><code>##
+## Pairwise comparisons using t tests with pooled SD
+##
+## data: census$Cap_Gain and census$Race
+##
+## Amer-Indian-Eskimo Asian-Pac-Islander Black Other
+## Asian-Pac-Islander 0.07387 - - -
+## Black 0.97215 0.00102 - -
+## Other 0.61409 0.28035 0.48739 -
+## White 0.23840 0.12631 0.00024 0.67822
+##
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(census$Cap_Loss, census$Race, p.adj = &#39;none&#39;)</code></pre>
+<pre><code>##
+## Pairwise comparisons using t tests with pooled SD
+##
+## data: census$Cap_Loss and census$Race
+##
+## Amer-Indian-Eskimo Asian-Pac-Islander Black Other
+## Asian-Pac-Islander 0.015 - - -
+## Black 0.274 0.011 - -
+## Other 0.422 0.188 0.979 -
+## White 0.014 0.614 6.3e-05 0.227
+##
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(census$Hours_week, census$Race, p.adj = &#39;none&#39;)</code></pre>
+<pre><code>##
+## Pairwise comparisons using t tests with pooled SD
+##
+## data: census$Hours_week and census$Race
+##
+## Amer-Indian-Eskimo Asian-Pac-Islander Black Other
+## Asian-Pac-Islander 0.92122 - - -
+## Black 0.02663 0.00011 - -
+## Other 0.57161 0.43370 0.18045 -
+## White 0.36201 0.14912 &lt; 2e-16 0.10489
+##
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>0.05/45</code></pre>
+<pre><code>## [1] 0.001111111</code></pre>
+<pre class="r"><code>1-(0.95)^45</code></pre>
+<pre><code>## [1] 0.9005597</code></pre>
+<p>All the numeric variables were MANOVA tested to see if they showed a mean difference depending on a person’s race, and the univariate ANOVA tests found signficant p-values for all numeric variables. The assumptions for MANOVA may not have been met, although sampling is random with few outliers, multivariate normality and linear relationships among dependent variables are unlikely. This is because capital gains and losses are likely to have a skew (most people don’t own stock), and education is likely skewed (most people have a high school diploma). Following this, pairwise t-tests were conducted to see how edunum (highest grade reached, 13 for college), Cap_Gain (Capital Gains), Cap_Loss (Capital Losses) and Hours_week (Hours worked per week) differed, on average, based on race, with results shown above. The total number of tests conducted at this point is 1 MANOVA + 4 ANOVA + 40 t tests (10 t-tests per ANOVA) = 45 total. As such, the bonferroni adjusted significance is .05/45 = 0.0011, and probability of a type I error is 0.9005597. Given this, we can examine significance: for grade level (edunum), all ethnic groups were significantly different from each other except for American Indians/Blacks and American Indians/Other. For Capital Gains, the only differences were between Asian/Black and White/Black. Regarding Capital Losses, only Blacks were significantly different from whites. For hours worked, Asians were different from Blacks, and Blacks were different from Whites.</p>
+<p><strong>2. (10 pts)</strong></p>
+<pre class="r"><code>null_hours &lt;- census$Hours_week 
+null_inc &lt;- census$Income %&gt;% as.character()
+rando &lt;- vector()
+census %&gt;% group_by(Income) %&gt;% summarise(m = mean(Hours_week)) </code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   Income       m
+##   &lt;fct&gt;    &lt;dbl&gt;
+## 1 &quot; &lt;=50K&quot;  38.8
+## 2 &quot; &gt;50K&quot;   45.5</code></pre>
+<pre class="r"><code>45.473 - 38.840</code></pre>
+<pre><code>## [1] 6.633</code></pre>
+<pre class="r"><code>for(i in 1:5000){
+  new &lt;- data.frame(inc = null_inc, hours = sample(null_hours))
+  rando[i] &lt;- mean(new[new$inc == &quot; &gt;50K&quot;,]$hours) - mean(new[new$inc == &#39; &lt;=50K&#39;,]$hours)
+   
+}
+mean(rando &gt; 6.633)*2</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>hist(rando); abline(v = 6.633) </code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot()+geom_histogram(aes(rando)) + geom_vline(xintercept = 6.633)</code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-3-2.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t.test(data = census, Hours_week~Income)</code></pre>
+<pre><code>##
+## Welch Two Sample t-test
+##
+## data: Hours_week by Income
+## t = -45.123, df = 14570, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not
+equal to 0
+## 95 percent confidence interval:
+## -6.920943 -6.344690
+## sample estimates:
+## mean in group &lt;=50K mean in group &gt;50K
+## 38.84021 45.47303</code></pre>
+<p>The permutation test performed above was testing to see if there was a true mean difference in hours worked per week between those making a salary greater than $50,000 and those making less than $50,000. The null hypothesis was that there was no mean difference in hours worked per week between the two salary groups, while the alternative hypothesis was that there was a true mean difference in hours worked between the two salary groups. The p-value for this manually conducted permutation test was found to be zero, so we reject the null hypothesis. The true mean difference of hours worked between the two income groups is not zero. Plots were made to show the null distribution (top graph) with the test statistic (bottom graph). As the bottom graph shows, the test statistic (true experimental mean, 6.633) is very far from the null distribution, hence why p-value was zero. A t-test was also conducted to show that the manually conducted permutation test has similar conclusions to R’s t-test.</p>
+<p><strong>3. (35 pts)</strong></p>
+<pre class="r"><code>census2 &lt;- census
+census2 &lt;- census2 %&gt;% mutate(Edu_centre = Edunum - mean(Edunum))
+fit1 &lt;- lm(Hours_week ~ Edu_centre*Race, data = census2)
+coeftest(fit1)</code></pre>
+<pre><code>##
+## t test of coefficients:
+##
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 40.464656 0.729140 55.4964 &lt; 2e-16 ***
+## Edu_centre 0.541667 0.299884 1.8063 0.07089 .
+## Race Asian-Pac-Islander -0.748000 0.830007 -0.9012
+0.36749
+## Race Black -1.648746 0.763197 -2.1603 0.03076 *
+## Race Other -0.628583 1.078010 -0.5831 0.55983
+## Race White 0.185103 0.732802 0.2526 0.80058
+## Edu_centre:Race Asian-Pac-Islander -0.075241 0.328734
+-0.2289 0.81896
+## Edu_centre:Race Black 0.119546 0.314570 0.3800 0.70392
+## Edu_centre:Race Other -0.245191 0.378001 -0.6487 0.51657
+## Edu_centre:Race White 0.179318 0.301231 0.5953 0.55166
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>#Insert graph here
+ggplot(data = census2, aes(Edu_centre, Hours_week, color = Race)) + geom_point(size = .8) + geom_smooth(method = &#39;lm&#39;, se = F)</code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" />
+A linear model was made to predict Hours per Week worked from an interaction between highest grade level passed (Edunum centred to Edu_centre) and Race. From this, the coefficient estimates can be interpreted. The intercept suggests that for a Native American with mean education levels, the predicted hours worked is 40.5. Each grade level reached above or below the mean increases hours worked by 0.54 for Native Americans. Compared to Native Americans, the slope (and by extension, the hours worked) is decreased by 0.75 for Asians, decreased by 1.65 for Blacks, by 0.63 for ‘Others’, and increases by 0.19 for Whites. The interactions show that for Asians, each 1 grade increase in education levels additionally decreases the slope (and so, the number of hours worked) by 0.08, for Blacks it increases the slope by 0.12, for ‘Others’ it decreases the slope by 0.25, and for Whites it increases the slope by 0.18. Each change in slope corresponds to a change in hours worked. The regression is graphed above. Note that most of the data points correspond to White people, simply because most of the sample is white (data was taken from US residents in 1994), and that vertical lines are formed because education is numeric discrete (grade levels are whole numbers.</p>
+<pre class="r"><code>ggplot(data = census2, aes(x=Edu_centre, y = Hours_week)) + geom_point()</code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>resids1 &lt;- fit1$residuals
+fitvals1 &lt;- fit1$fitted.values
+ggplot()+geom_point(aes(fitvals1,resids1)) + geom_hline()</code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-5-2.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>bptest(fit1)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  fit1
+## BP = 71.176, df = 9, p-value = 8.95e-12</code></pre>
+<pre class="r"><code>ks.test(resids1, &#39;pnorm&#39;, mean = 0, sd(resids1))</code></pre>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  resids1
+## D = 0.16724, p-value &lt; 2.2e-16
+## alternative hypothesis: two-sided</code></pre>
+<pre class="r"><code>coeftest(fit1, vcov = vcovHC(fit1))</code></pre>
+<pre><code>##
+## t test of coefficients:
+##
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 40.464656 0.674907 59.9559 &lt; 2e-16 ***
+## Edu_centre 0.541667 0.298689 1.8135 0.06977 .
+## Race Asian-Pac-Islander -0.748000 0.788305 -0.9489
+0.34269
+## Race Black -1.648746 0.700497 -2.3537 0.01859 *
+## Race Other -0.628583 1.016486 -0.6184 0.53632
+## Race White 0.185103 0.679001 0.2726 0.78515
+## Edu_centre:Race Asian-Pac-Islander -0.075241 0.329128
+-0.2286 0.81918
+## Edu_centre:Race Black 0.119546 0.312976 0.3820 0.70249
+## Edu_centre:Race Other -0.245191 0.368618 -0.6652 0.50595
+## Edu_centre:Race White 0.179318 0.300230 0.5973 0.55033
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>#R-Squared Value
+(sum((census$Hours_week - mean(census$Hours_week))^2)-sum(fit1$residuals^2))/sum((census$Hours_week-mean(census$Hours_week))^2)</code></pre>
+<pre><code>## [1] 0.02419207</code></pre>
+<p>The assumptions for the model were checked. Graphs show that neither the linear variables nor their residuals are linear, and the residuals are heteroskedastic (by the Breusch-Pagan test). Additionally, a KS test shows that the normality assumption also fails.
+The regression results were recomputed with robust standard errors. There was no change in significance before and after robust standard errors, only the main effect of being Black was signficant in both cases. Generally speaking, all p-values decreased with the application of robust standard errors. As such, the only significant result was that being Black significantly reduces the number of hours worked per week, compared to Native Americans. The proportion of variation in the outcome explained by the outcome (the R-squared value) was 0.024, or 2.4% which means the model is fairly ineffectual in describing correlation.</p>
+<pre class="r"><code>fit2&lt;-lm(Hours_week ~ Edu_centre + Race, data = census2)
+coeftest(fit2)</code></pre>
+<pre><code>##
+## t test of coefficients:
+##
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 40.586033 0.692064 58.6449 &lt; 2e-16 ***
+## Edu_centre 0.699549 0.026438 26.4598 &lt; 2e-16 ***
+## Race Asian-Pac-Islander -1.074492 0.789734 -1.3606
+0.17366
+## Race Black -1.747335 0.725397 -2.4088 0.01601 *
+## Race Other -0.250411 1.013838 -0.2470 0.80492
+## Race White 0.064895 0.695963 0.0932 0.92571
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(fit1, fit2, test = &#39;LRT&#39;)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Hours_week ~ Edu_centre * Race
+## Model 2: Hours_week ~ Edu_centre + Race
+##   Res.Df     RSS Df Sum of Sq Pr(&gt;Chi)
+## 1  32551 4843974                      
+## 2  32555 4845026 -4   -1052.4   0.1321</code></pre>
+<p>Without any interaction, the highest grade level reached (Edu_centre, the centered version) is significant, which it was not with the interaction. Being black is still a significant factor on the number of hours worked per week, both with and without the interaction. Conducting a likelihood ratio test, it can be seen that the p-value is &gt;0.05, so the smaller model is better than the larger model.</p>
+<p><strong>4. (5 pts)</strong></p>
+<pre class="r"><code>#Bootstrapped standard errors
+samp_distn&lt;-replicate(1000, {
+  boot_dat&lt;-census2[sample(nrow(census2),replace = TRUE),]
+  fit&lt;-lm(Hours_week~Edu_centre*Race,data= boot_dat) 
+  coef(fit)
+})
+samp_distn%&gt;%t%&gt;%as.data.frame%&gt;%summarise_all(sd)</code></pre>
+<pre><code>## (Intercept) Edu_centre Race Asian-Pac-Islander Race
+Black Race Other Race White
+## 1 0.6657717 0.3032224 0.7807576 0.6968674 1.022524
+0.6678974
+## Edu_centre:Race Asian-Pac-Islander Edu_centre:Race Black
+Edu_centre:Race Other
+## 1 0.3305624 0.3166379 0.3579333
+## Edu_centre:Race White
+## 1 0.3027685</code></pre>
+<p>The bootstrapped standard errors are shown in the table above. The bootstrapped SEs are all somewhat smaller than the original SEs, as a result, the p-values for the regression would be smaller if the bootstrapped SEs were used, since the test statistic would be more standard errors away from the mean (see original and robust SEs in part 3). Comparing the bootstrapped SEs to the robust SEs, we find that while some of the bootstrapped SEs are smaller than the robust SEs, others are larger. As such, it cannot be absolutely determined as to which of the two methods produces smaller p-values as a whole. Generally speaking, if the SE is larger, than the p-value will be larger, because the test statistic will be fewer SEs away from the mean as compared to if the SE is smaller.</p>
+<p><strong>5. (40 pts)</strong></p>
+<pre class="r"><code>census2 &lt;- census2%&gt;%mutate(Inc_b = case_when(Income == &#39; &lt;=50K&#39; ~ 0, Income == &#39; &gt;50K&#39; ~ 1))
+fit3 &lt;- glm(Inc_b ~ Marital * Sex, data = census2, family = binomial(link = &#39;logit&#39;))
+coeftest(fit3)</code></pre>
+<pre><code>##
+## z test of coefficients:
+##
+## Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -2.633856 0.077380 -34.0378 &lt; 2.2e-16 ***
+## Marital Married-AF-spouse 2.346174 0.545577 4.3004
+1.705e-05 ***
+## Marital Married-civ-spouse 2.453526 0.091768 26.7361 &lt;
+2.2e-16 ***
+## Marital Married-spouse-absent -0.236107 0.319455 -0.7391
+0.4598511
+## Marital Never-married -0.688185 0.110585 -6.2231
+4.874e-10 ***
+## Marital Separated -0.952925 0.257758 -3.6970 0.0002182
+***
+## Marital Widowed -0.195513 0.170325 -1.1479 0.2510159
+## Sex Male 0.978315 0.100903 9.6956 &lt; 2.2e-16 ***
+## Marital Married-AF-spouse:Sex Male -0.913776 0.867092
+-1.0538 0.2919561
+## Marital Married-civ-spouse:Sex Male -1.015521 0.113661
+-8.9346 &lt; 2.2e-16 ***
+## Marital Married-spouse-absent:Sex Male -0.219882
+0.393683 -0.5585 0.5764866
+## Marital Never-married:Sex Male -0.501362 0.140280
+-3.5740 0.0003516 ***
+## Marital Separated:Sex Male 0.656743 0.306496 2.1427
+0.0321334 *
+## Marital Widowed:Sex Male 0.654804 0.258064 2.5374
+0.0111689 *
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>exp(coef(fit3)) %&gt;% round(2) </code></pre>
+<pre><code>## (Intercept) Marital Married-AF-spouse
+## 0.07 10.45
+## Marital Married-civ-spouse Marital Married-spouse-absent
+## 11.63 0.79
+## Marital Never-married Marital Separated
+## 0.50 0.39
+## Marital Widowed Sex Male
+## 0.82 2.66
+## Marital Married-AF-spouse:Sex Male Marital
+Married-civ-spouse:Sex Male
+## 0.40 0.36
+## Marital Married-spouse-absent:Sex Male Marital
+Never-married:Sex Male
+## 0.80 0.61
+## Marital Separated:Sex Male Marital Widowed:Sex Male
+## 1.93 1.92</code></pre>
+<p>The binary categorical variable was income, with value of 1 if &gt;50,000 USD, and a value of 0 if &lt;50,000 USD. The coefficient estimates are seen above, and to interpret them, the coefficients were exponentiated. The intercept (exponentiated) shows that a divorced female has odds of 0.07 for having an income above $50,000. The remaining main effect exponentiated coefficients change the odds; to find the odds of having an income above 50K for the other categories, we multiply the exponentiated intercept by the exponentiated coefficients. So, the odds for having above 50K for females are 0.83736 for married couples, 0.05688 if spouse is absent, 0.036 if never married, 0.02808 if separated, 0.05904 if widowed. As such, we can see that married women are most likely to have higher incomes, whereas separated women have the worst odds for higher incomes, followed by never married women.
+Being male and divorced gives odds of 0.19152, much higher than for women. The interactions odds for men in different marital situations can be interpreted as the odds of having above 50K income in men of a certain marital status being some factor different from the odds for men who are divorced. As an example calculation, For widowed men, the odds are 0.07(Intercept) * 2.66(Male) * 0.82(Widowed) * 1.92(Interaction), which is 0.3015291. For men, the odds of having above 50K in income are 0.8018559 if married, 0.1210406 if spouse absent, 0.0584136 if never married, and 0.1441571 if separated. From this, we may conclude that married men have the best odds of having an income greater than $50,000, and men who never marry have the worst odds of having incomes greater than 50,000. This is similar to the results for women, so the evidence would suggest either that marriage increases the odds of higher income jobs, or that those with higher income jobs are more likely to be married.</p>
+<pre class="r"><code>census2$prob1 &lt;- predict(fit3, type = &#39;response&#39;)
+table(predictions_0.5 = ifelse(census2$prob1&gt;0.5,1,0), truth = census2$Inc_b) %&gt;% addmargins</code></pre>
+<pre><code>##                truth
+## predictions_0.5     0     1   Sum
+##             0   24720  7841 32561
+##             Sum 24720  7841 32561</code></pre>
+<pre class="r"><code>table(predictions_0.4 = ifelse(census2$prob1&gt;0.4,1,0), truth = census2$Inc_b) %&gt;% addmargins</code></pre>
+<pre><code>##                truth
+## predictions_0.4     0     1   Sum
+##             0   16423  1139 17562
+##             1    8297  6702 14999
+##             Sum 24720  7841 32561</code></pre>
+<pre class="r"><code>census2$logit&lt;-predict(fit3) #get predicted log-odds
+ggplot(census2,aes(logit, fill=Income))+geom_density(alpha=.3)+
+  geom_vline(xintercept=0,lty=2)</code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rplot1 &lt;- ggplot(census2)+geom_roc(aes(d=Inc_b, m = prob1), n.cuts = 0)
+rplot1</code></pre>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-9-2.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>calc_auc(rplot1)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.7746248</code></pre>
+<p>Next, a confusion matrix was made, as shown above. As the table shows, the model is clearly not very good, since it failed to predict a single true value at all with a cutoff value of 0.5. It can, however, predict true values at lower cutoffs, although the criterion is more lenient. Using the 0.5 cutoff value, the Sensitivity is 0 (no true positives), Specificity is 1 (only predicted negatives), recall is 0 (none classified positive), and accuracy is 0.7591904. If cutoff is 0.4, sensitivity is 6702/7841 = 0.8547379, specificity is 16423/24720 = 0.6643608, recall is 6702/14999 = 0.4468298 and accuracy is (16423+6702)/32561 = 0.7102055. Then, we plotted the density of log-odds by outcome, as well as the ROC curve. The log-odds density was all negative, so only false negatives were present, no false positives (which matches the confusion matrix). The AUC was 0.775, which is not very good. An ROC curve plots sensitivity against specificity, ideally, the curve should be extremely steep at low values of FPR (false positive), all the way up to a value near 1 for TPR (true positive), and level out from there, this would signify an ideal model. Since AUC is area under the ROC curve, the ideal AUC would be nearly 1 in this case. However, a very bad model would simple have a diagnol line with a slope of 1, and the area under this curve (AUC) would be 0.5. Since this AUC falls right in the middle of 0.5 and 1, with AUC = 0.775, we may conclude that the model has mediocre predictive power, but it could be worse. Specifically, 0.775 is the probability that a randomly selected person with income &gt;50K has a higher prediction than a random person with under 50K income.</p>
+<pre class="r"><code>class_diag&lt;-function(probs,truth){
+  tab&lt;-table(factor(probs&gt;.5,levels=c(&quot;FALSE&quot;,&quot;TRUE&quot;)),truth)
+  acc=sum(diag(tab))/sum(tab)
+  sens=tab[2,2]/colSums(tab)[2]
+  spec=tab[1,1]/colSums(tab)[1]
+  ppv=tab[2,2]/rowSums(tab)[2]
+  if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1
+  #CALCULATE EXACT AUC
+  ord&lt;-order(probs, decreasing=TRUE)
+  probs &lt;- probs[ord]; truth &lt;- truth[ord]
+  TPR=cumsum(truth)/max(1,sum(truth)) 
+  FPR=cumsum(!truth)/max(1,sum(!truth))
+  dup&lt;-c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+  TPR&lt;-c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+  n &lt;- length(TPR)
+  auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+  data.frame(acc,sens,spec,ppv,auc)
+}
+k=10
+data1&lt;-census2[sample(nrow(census2)),]
+folds&lt;-cut(seq(1:nrow(census2)),breaks=k,labels=F)
+diags&lt;-NULL
+for(i in 1:k){
+train&lt;-data1[folds!=i,]
+test&lt;-data1[folds==i,]
+truth&lt;-test$Inc_b
+fit4&lt;-glm(Inc_b~Marital*Sex,data=train,family=&quot;binomial&quot;)
+probs&lt;-predict(fit4,newdata = test,type=&quot;response&quot;)
+diags&lt;-rbind(diags,class_diag(probs,truth))
+}
+apply(diags,2,mean)</code></pre>
+<pre><code>##       acc      sens      spec       ppv       auc 
+## 0.7590370 0.0000000 0.9997982       NaN 0.7739464</code></pre>
+<p>Finally, a 10-fold CV was done. Accuracy was 0.759, Sensitivity 0.000, and Specificity was 0.999. Recall (PPV) was an NA value, likely because the model did not classify anything as positive, although it should technically be 0.</p>
+<p><strong>6. (10 pts)</strong></p>
+<pre class="r"><code>census2 &lt;- census2 %&gt;% dplyr::select(-c(logit, prob1, Country, Inc_b, ID, Edunum))
+#census2 &lt;- census2 %&gt;% dplyr::select(-Inc_b)
+fit5 &lt;- glm(Income ~ -1+., data = census2, family = binomial(&#39;logit&#39;))
+m1 &lt;- model.matrix(fit5)
+m1 &lt;- scale(m1)
+m2&lt;- as.matrix(census2$Income)
+c1 &lt;- cv.glmnet(m1,m2, family = &#39;binomial&#39;)
+l1&lt;-glmnet(m1,m2, family = &#39;binomial&#39;, lambda = c1$lambda.1se)
+coef(l1)</code></pre>
+<pre><code>## 60 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                                         s0
+## (Intercept)                   -1.853721182
+## Age                            0.302315032
+## Job ?                         -0.086776871
+## Job Federal-gov                0.071279518
+## Job Local-gov                  .          
+## Job Never-worked               .          
+## Job Private                    0.012864773
+## Job Self-emp-inc               0.033647215
+## Job Self-emp-not-inc          -0.072732111
+## Job State-gov                 -0.003045626
+## Job Without-pay                .          
+## Education 11th                 .          
+## Education 12th                 .          
+## Education 1st-4th              .          
+## Education 5th-6th              .          
+## Education 7th-8th              .          
+## Education 9th                  .          
+## Education Assoc-acdm          -0.021131440
+## Education Assoc-voc            .          
+## Education Bachelors            .          
+## Education Doctorate            .          
+## Education HS-grad              .          
+## Education Masters              .          
+## Education Preschool            .          
+## Education Prof-school          0.009040599
+## Education Some-college         .          
+## Marital Married-AF-spouse      0.039389961
+## Marital Married-civ-spouse     0.875032727
+## Marital Married-spouse-absent  .          
+## Marital Never-married         -0.150809207
+## Marital Separated              .          
+## Marital Widowed                .          
+## Occupation Adm-clerical        .          
+## Occupation Armed-Forces        .          
+## Occupation Craft-repair        .          
+## Occupation Exec-managerial     0.227439497
+## Occupation Farming-fishing    -0.134690474
+## Occupation Handlers-cleaners  -0.076534338
+## Occupation Machine-op-inspct  -0.034494283
+## Occupation Other-service      -0.179792459
+## Occupation Priv-house-serv     .          
+## Occupation Prof-specialty      0.135835792
+## Occupation Protective-serv     0.039499213
+## Occupation Sales               0.054119230
+## Occupation Tech-support        0.072350841
+## Occupation Transport-moving    .          
+## Relation Not-in-family         .          
+## Relation Other-relative       -0.033361446
+## Relation Own-child            -0.225557921
+## Relation Unmarried             .          
+## Relation Wife                  0.188101989
+## Race Asian-Pac-Islander        .          
+## Race Black                     .          
+## Race Other                     .          
+## Race White                     0.042597392
+## Sex Male                       0.257692003
+## Cap_Gain                       1.704325416
+## Cap_Loss                       0.225081288
+## Hours_week                     0.326373557
+## Edu_centre                     0.697607009</code></pre>
+<p>From the LASSO, it appears that Age, certain types of occupation (too long to write out, see LASSO above), having an associates or professional degree, one’s highest grade level in school, being married, never being married, relationship status in the family, being white, being male, one’s Capital Gains and Losses, and hours worked per week are all significant variables. Again, full details are listed in the LASSO above. Now, only these significant variables were plugged into a 10-fold CV, seen below.</p>
+<pre class="r"><code>census3 &lt;- census2
+census3 &lt;- census3 %&gt;% mutate(n_job = ifelse(Job != &#39; Local-gov&#39; &amp; Job != &#39; Never-worked&#39; &amp; Job != &#39; ?&#39;, 1,0 ))
+census3 &lt;- census3 %&gt;% mutate(n_edu = ifelse(Education == &#39; Assoc-acdm&#39; | Education == &#39; Prof-school&#39;, 1,0 ))
+census3 &lt;- census3 %&gt;% mutate(n_mar = ifelse(Marital != &#39; Married-spouse-absent&#39; &amp; Marital != &#39; Separated&#39; &amp; Marital != &#39; Widowed&#39;, 1,0 ))
+census3 &lt;- census3 %&gt;% mutate(n_occ = ifelse(Occupation != &#39; Adm-clerical&#39; &amp; Occupation != &#39; Armed Forces&#39; &amp; Occupation != &#39; Craft-repair&#39;, 1,0 ))
+census3 &lt;- census3 %&gt;% mutate(n_rel = ifelse(Relation != &#39; Not-in-family&#39; &amp; Relation != &#39; Unmarried&#39;, 1,0 ))
+census3 &lt;- census3 %&gt;% mutate(n_race = case_when(Race == &#39; White&#39; | Race == &#39; Other&#39; ~ 1, Race != &#39; White&#39; ~ 0))
+k=10
+data1&lt;-census3[sample(nrow(census3)),]
+folds&lt;-cut(seq(1:nrow(census3)),breaks=k,labels=F)
+diags&lt;-NULL
+for(i in 1:k){
+train&lt;-data1[folds!=i,]
+test&lt;-data1[folds==i,]
+truth&lt;-test$Income
+fit6&lt;-glm(Income~Age+n_job+n_edu+n_mar+n_occ+n_rel+n_race+Edu_centre+Hours_week+Cap_Gain+Cap_Loss+Sex,data=train, family = &#39;binomial&#39;)
+probs&lt;-predict(fit6,newdata = test,type=&quot;response&quot;)
+diags&lt;-rbind(diags,class_diag(probs,truth))
+}
+apply(diags,2,mean)</code></pre>
+<pre><code>##       acc      sens      spec       ppv       auc 
+## 0.8347405 0.5085720 0.9382508 0.7231312 0.8767321</code></pre>
+<p>The 10-fold CV was run, with accuracy of 0.835, sensitivity at 0.51, specificity at 0.938, PPV at 0.72 and AUC as 0.877 (a good value) as shown above in the output. The AUC was a fairly good value (0.877), as was the accuracy (0.835), and both were significant improvements over the model made in part 5, which had poor AUC of 0.774 and accuracy of 0.759. We may therefore conclude that the LASSO made our model more robust.</p>
+</div>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

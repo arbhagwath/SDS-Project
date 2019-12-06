@@ -1,0 +1,163 @@
+---
+title: "Project 1 Report"
+output: html_document
+date: 2019-09-23
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Analysis and Comparison of Partisan Lean of US Representatives and House Legislation
+
+#### Ankur Bhagwath, EID asb3477
+
+#### MW 1-230
+
+## Introduction
+The datasets I have chosen contain data about all 435 members of the current 116th House of Representatives (elected 2018). The partisan leans of each of these representatives was determined through their DW-Nominate score, an objective metric developed by political scientists at UCLA. This places all representatives on a scale from -1 to 1, with more negative scores being more liberal and more positive scores being more conservative. These values have been assigned based on the voting records of the representatives. Additionally, each vote they take on each item of legislation has its own DW-Nominate score based on the partisan lean of the legislation. 
+I obtained 3 datasets from the DW-Nominate data page run by UCLA (www.voteview.org), each containing different parts of the data I required. One dataset contained the names of each representative along with a unique ID code and their personal DW-Nominate Score (variable nominate_dim1). Another contained the ballot of each representative for a particular vote, with each vote identified by a unique roll call number determined by government clerks. The last dataset had the name of the legislation and type of vote for each roll-call vote, along with the nominate score of the vote (variable nominate_mid1). To begin analysis, I first had to merge the three datasets.
+
+## Merging Datasets
+```{r}
+library(dplyr)
+library(tidyr)
+legislation <- read.csv('individual_votes.csv')
+names <- read.csv('member_names.csv')
+votes <- read.csv('members_votes.csv')
+#Merging Datasets
+df1 <- full_join(votes,names, by = "icpsr")
+df1 <- full_join(df1, legislation, by = "rollnumber")
+df1 %>% select(icpsr, party_code, state_abbrev, nominate_dim1, rollnumber, nominate_mid_1, vote_result, vote_question) %>% glimpse()
+```
+Here, the 3 datasets were merged into one (df1). First, the dataset containing each congressperson's personal data and nominate score (names) was full-merged with the dataset containing each representatives roll-call votes(votes) by their unique identification number common to both datasets(icpsr). Then, this was full-joined to the dataset containing the details and nominate scores of each vote and legislation (legislation) by the rollnumber variable, which linked each vote taken by each representative to the details of the legislation they were voting on. A glimpse of the most used variables of the final dataset is shown.
+
+## Wrangling and Summary Statistics
+```{r}
+#Here are the 6 core functions. Mutate is vote_diff, which finds difference between nominate_mid_1 score (the ideological lean of the vote) and nominate_dim1 (member ideology)
+df1 <- df1%>% mutate(vote_diff = nominate_mid_1 - nominate_dim1) 
+df1 <- df1 %>% mutate(party_code = recode_factor(party_code, "200" = "R", "100" = "D", "328" = 'I'))
+```
+Using the newly created dataset, a new variable 'vote_diff' was created using the mutate function. This took the difference between the nominate_mid_1 (nominate score of the vote/legislation) and nominate_dim1 (nominate score of the representative). This would be used later to analyze how willing representatives were to vote for legislation that didn't align with their own political scores. I also assigned the party initial (R,D,I) to the party-code variable.
+
+```{r}
+#Next, we use summarize and group_by:
+#Average State member nominate score: Most liberal
+df1%>% group_by(state_abbrev) %>% summarise(mean_score = mean(nominate_dim1)) %>% arrange(mean_score) %>% head(5)
+#Most conservative representatives
+df1%>% group_by(state_abbrev) %>% summarise(mean_score = mean(nominate_dim1)) %>% arrange(desc(mean_score)) %>% head(5)
+```
+ 
+ Next, different summary statistics were found. It was found that Vermont has the nation's most liberal House delegation (with 1 representative), with a nominate score of -0.41, followed by MA (-.40), RI (-.38), CT(-.34), and NH(-.34), which can be largely expected of New England states. It was found that Wyoming (also with 1 representative) has the most conservative House delegation, with a nominate score of 0.50, followed by SD (.48), ID(.46), WV(.44) and AR(0.44), which is expected, since these states are known for being highly conservative.
+
+```{r}
+#Compare mean nominate scores per state, per party, uses pivot_wider
+state_party <- df1%>% group_by(state_abbrev, party_code) %>% summarise(mean_score = mean(nominate_dim1)) %>% pivot_wider(names_from = 'party_code',values_from = 'mean_score')%>% arrange()
+#Most/least conservative republican contingent, least/most liberal democratic contingent
+state_party %>% ungroup() %>% filter(R == max(R,na.rm=T))
+state_party %>% ungroup() %>% filter(R == min(R,na.rm=T))
+state_party %>% ungroup() %>% filter(D == max(D,na.rm=T))
+state_party %>% ungroup() %>% filter(D == min(D,na.rm=T))
+```
+
+ Next, the mean nominate scores of the Democratic and Republican parties in each state were analyzed. It was found that Arizona has the most conservative Republicans (.687), while New Jersey as the least conservative Republicans (.164); Utah has the least liberal Democrats (-0.083) while Mississippi has the most liberal Democrats (-.516). With outside research it was found that Arizona has been a Republican stronghold since the 1950s, explaining their conservatism, while New Jersey's lone Republican survived the 2018 election through moderate positions, while all other NJ Republicans were swept out. Utah's lone Democrat won by a razor-thin margin, hence his moderation, while Mississippi's lone Democrat is in an extremely safe Democratic seat, and was a founder of the House Progressive Caucus.
+ 
+```{r}
+#Median nominate scores for each party:
+df1 %>% select(nominate_dim1, party_code) %>% group_by(party_code) %>% summarise(median(nominate_dim1, na.rm = T))
+```
+
+The median nominate score for Republicans is .521, for Democrats it is -.381.
+
+```{r}
+#Find deviation among members scores within a party
+df1 %>% select(party_code,nominate_dim1)%>% group_by(party_code) %>% summarise(sd(nominate_dim1, na.rm = T))
+```
+
+ The standard deviation of nominate scores among Republicans is .14, among Democrats it is .12.
+
+```{r}
+#Find average partisan lean of successfully passed bills' passage votes:
+df1 %>% filter(vote_result == 'Passed') %>% filter(vote_question == "On Passage") %>% summarise(mean(nominate_mid_1))
+```
+
+Now, we analyzed the partisan leans of legislation and votes. We found that passed votes tended to have a slightly conservative score (about 0.11), which was strange as Democrats control the House, but may be explained by the need to get bills through the Republican-controlled Senate, or it could be a political strategy to protect swing-district Democrats.
+
+```{r}
+#Find number of votes that failed, by type of vote:
+df1 %>% filter(vote_result == "Failed") %>% group_by(vote_question) %>% summarise(roll = n_distinct(rollnumber)) %>% arrange(desc(roll))
+```
+
+Next, we looked at all votes in which the outcome was 'Failure', to see what kind they were. It was found that by far the most failures concerned amendments (76) and recommit motions, which are another way of getting amendments (36), while no other category of vote had more than 3 failures. This is likely due to the Republican minority trying to amend bills in ways that disagree with the Democratic majority, which can use its majority power to vote down any Republican amendments, or liberal Democrats propsing amendments that centrists disagree with. To look into this, we found the median nominate score of the failed amendments, as shown below:
+
+```{r}
+#What was the mean and median partisan lean of those failed amendments?
+df1 %>% filter(vote_question == 'On Agreeing to the Amendment', vote_result == "Failed") %>% summarise(mean = mean(nominate_mid_1,na.rm = T), median = median(nominate_mid_1,na.rm = T))
+
+```
+
+The mean nominate score of failed amendments is 0.121, and the median score was 0.137. Both of these were conservative scores, somewhat more conservative than the scores of passed bills, which was likely caused by most failed amendments originating from Republicans. Since Democrats control the House, most Republican legislation would never be brought to a vote, and so amendments are the only way for the minority to register its disapproval (even if they get voted down). Additionally, very liberal amendments are were likely to get voted down by centrist democrats concerned about re-election, which kept the mean and median from being too high. The discrepancy between mean and median (where median is significantly higher) would indicate that most of the amendments were conservative, hence the higher median, but most rejected liberal amendments were very liberal, which would shift the mean towards a liberal score.
+
+```{r}
+#Find congresspeople who, on average, agreed to pass bills closest to the partisan lean. Closest to Lean:
+df1 %>% filter(cast_code == 1) %>% filter(vote_question == 'On Passage') %>% group_by(bioname, party_code) %>% summarise(m1 = abs(mean(vote_diff))) %>% arrange(m1) %>% head(5)
+#Furthest from lean:
+df1 %>% filter(cast_code == 1) %>% filter(vote_question == 'On Passage') %>% group_by(bioname, party_code) %>% summarise(m1 = abs(mean(vote_diff))) %>% arrange(desc(m1)) %>% head(5)
+```
+
+Next, using the mutant 'vote_diff' variable, we looked at legislators who were most and least willing to vote for legislation with nominate scores far from their personal nominate scores. The 5 most willing were all Republicans, and further research found that these representatives represent competitive districts. The 5 least willing were mostly Republicans, with 1 Democrat; the Republicans are all outspoken members of the highly conservative Freedom Caucus, while the one Democrat is in a very safe Houston-area seat.
+   
+```{r}
+#The average number of 'Yay' and Nay' votes cast by representatives of either party. For Nay:
+df1 %>% filter(cast_code == 6) %>% group_by(bioname, party_code) %>% summarise(nay = n()) %>% group_by(party_code) %>% summarise(mean(nay))
+#For yea:
+df1 %>% filter(cast_code == 1) %>% group_by(bioname, party_code) %>% summarise(yea = n()) %>% group_by(party_code) %>% summarise(mean(yea))
+```
+
+We then looked into the average number of yea and nay votes cast by Democrats and Republicans: Republicans cast about 262 nay and 263 yea votes, whereas Democrats cast 119 nay and 419 yea votes, which is to be expected from the party that controls which legislation comes to a vote. Democrats are unlikely to vote no on legislation they brought up, while Republicans are less likely to vote on legislation they didn't write.
+
+```{r}
+#How does personal DW-Nominate score of representative and correlate to their votes on passage of bills?
+df1 %>% filter(vote_question == 'On Passage') %>% select(nominate_dim1, nominate_mid_1) %>% na.omit %>% cor()
+```
+  
+  Finally, we created a correlation matrix to see how strong the correlation was between the nominate scores of the representatives versus the nominate scores of the legislation, and it was surprising to find the correlation coefficient was very weak (0.0003). Two possible explanations are: first, most legislation is bipartisan, and deals with routine matters (although more partisan issues are publicized more), and secondly, the Democratic leadership is far more centrist than many of its members, and most of the legislation brought to a vote is more centrist than the members themselves.
+  
+## Graphs
+```{r}
+library(ggplot2)
+
+df1 %>% group_by(state_abbrev, cast_code) %>% summarise(rep_nom = mean(nominate_dim1,na.rm = T), vote_nom = mean(nominate_mid_1[vote_question == 'On Passage'])) %>% filter(cast_code == 1) %>% ggplot(aes(x = rep_nom, y = vote_nom, label = state_abbrev)) + geom_point(stat = 'summary') + geom_smooth(method='lm') + geom_text(aes(label=ifelse(rep_nom>0.29| rep_nom < -.37 |vote_nom > 0.15,as.character(state_abbrev),'')),hjust=0,vjust=0) + ggtitle('Nominate scores of vote vs. representative, average by state') + ylab('Vote Score') + xlab('Representative Score')
+df1 %>%  filter(cast_code == 1, vote_question == "On Passage")%>% group_by(state_abbrev) %>% summarise(rep_nom = mean(nominate_dim1,na.rm = T), vote_nom = mean(nominate_mid_1)) %>% ggplot(aes(x = rep_nom, y = vote_nom, colour = state_abbrev)) + geom_point(stat = 'summary')  + geom_text(aes(label=ifelse(rep_nom>-0.1,as.character(state_abbrev),'')),hjust=0,vjust=0) + ggtitle('Above Graph, but color coded') + ylab('Vote Score') + xlab('Representative Score')
+```
+
+In this first graph, labeled 'Nominate Scores of vote vs representative, average by state', we plotted the average nominate scores of each 'yea' vote that a state's representatives took in passage of legislation versus the average nominate score of the state's representatives. So, the y-axis is the nominate scores of the legislation, and the x-axis are the nominate scores of the representatives. By applying a trendline to the graph, it was shown that as the average nominate score of a state's congressional delegation increases (becomes more conservative), the bills that that delegation are willing to approve becomes more conservative (increase nominate score).
+
+By applying labels to the points, we see that to the right of the graph, where the states have very conservative members, the states tend to be those with only 1 representative (WY, AK, ND) or have all-Republican delegations (AR, WV). From an analytical perspective, this makes sense: since these representatives often have no Democratic competition, the only competitive elections in these states are for the Republican primary, which necessitates more conservative positions to appeal to the party base. Most of the rest of the states have nearly equal vote scores, likely due to their mixed delegations balancing out the voting scores. Surprisingly, liberal states with all-Democratic delegations (MA, RI, and VY, labeled left) do not appear to have significantly more liberal vote scores than more centrist states, and states like WV, which are highly conservative, have some very liberal voting records (perhaps due to the state's previous Democratic dominance). Another version of this graph with all states in color code is shown directly below it (just as an extra).
+
+```{r}
+df1 %>% group_by(party_code, state_abbrev) %>% summarise(a = mean(nominate_dim1)) %>% pivot_wider(names_from = party_code, values_from = a) %>% select(-I) %>% na.omit %>% ggplot(aes(x = D, y = R, label = state_abbrev)) + geom_point() + xlab('Mean Democratic Score') + ylab('Mean Republican Score') + ggtitle('State Republican vs Democratic contingent Ideology') + geom_text(aes(label=ifelse(D<0.0,as.character(state_abbrev),'')),hjust=0,vjust=0) + geom_smooth(method = 'lm') + scale_x_continuous(breaks = seq(-0.6,0.0, by = 0.025)) 
+```
+
+In the second graph, the average nominate score of the state's Republican delegation was plotted against the nominate score of the state's Democratic delegation. This was only done for states that both Democratic and Republican congresspeople. Remember that a more negative score on the x-axis indicates more liberal representatives, while a more positive score on the y-axis indicates more conservative representatives. One might expected that in more liberal states (negative x), the Democratic delegation would also be more liberal (negative x-value) and the Republican delegation would be less conservative to stay competitive (smaller y-value), and vice-versa in conservative states. In such a scenario, the trendline would be strongly positive (i.e. more liberal Democrats bring less conservative Republicans). Surprisingly, the trendline is only weakly positive, and there does not appear to be much association, unless you split the states by geography. Looking at the graph, it can be seen that more Northern states (below trendline) favor moderation: the less liberal the Democratic party, the less conservative the Republicans tend to be. In the south (top side of trendline), the opposite tends to be true: as the Democratic delegation is less liberal, the Republicans are more conservative. The reasons for this are varied, and likely too complex to speculate on based only on this data.
+
+*Note: I tried adding error bars, but due to the close proximity of the points in both graphs, adding error bars made the graph unreadable, so I left them out.
+
+## K-Means Cluster Analysis
+```{r}
+k1 <- df1 %>% filter(cast_code == 1) %>% group_by(bioname) %>% summarise(rep = mean(nominate_dim1,na.rm = T), leg = mean(nominate_mid_1[vote_question == 'On Passage'], na.rm = T)) %>% na.omit %>% select(rep, leg) %>% kmeans(4)
+k1_d <- df1 %>% filter(cast_code == 1) %>% group_by(bioname) %>% summarise(rep = mean(nominate_dim1,na.rm = T), leg = mean(nominate_mid_1[vote_question == 'On Passage'], na.rm = T))%>% na.omit %>% select(rep, leg)
+k1_c <- k1_d %>% mutate(cluster = as.factor(k1$cluster))
+k1_c %>% ggplot(aes(rep, leg, color = cluster)) + geom_point() + ggtitle("Cluster Analysis of Legislative Vote Nominate Score vs. Representative Score") + xlab('Representative Nominate Score') + ylab('Legislation Nominate Score')
+```
+
+The first cluster analysis compared average Legislative Vote nominate score vs Representative Nominate Score, using legislation on which the representative voted 'Yea'. I aimed to create four clusters: liberal Democrats(far left cluster), moderate Democrats (middle left cluster), moderate Republicans (middle right), and conservative Republicans(furthest right). The hypothesis was that more liberal clusters would have both liberal personal nominate scores and liberal legislative scores, while the conservative cluster would have both conservative nominate scores and more conservative legislative scores. The results gave a more surprising result. The moderate and liberal Democratic clusters had nearly identical voting records, and while the Republican clusters and more conservative voting records, Republican congresspeople had much greater variance in what they voted for. This may be explained by the Democratic Party leadership avoiding votes that would divide the party, and only bringing legislation that everyone would vote for. Additionally, party whips may be coercing representatives into voting in ways they may not personally agree with, since the Democratic majority is not large enough to allow defection. For the Republican clusters, the higher variance might be explained by their being in the minority. Since their votes don't really matter, as the Democrats will pass legislation regardless of what they do, they may be freer to vote as they please. Additionally, fear of competition in the 2020 elections may drive both sides to vote in ways their constituents would prefer them to vote, rather than the ways they would like to vote.
+
+```{r}
+k2 <- df1 %>% filter(vote_question == 'On Agreeing to the Amendment')%>% group_by(rollnumber) %>% summarise(nom = mean(nominate_mid_1, na.rm = T), yes = mean(yea_count)) %>% select(nom, yes) %>% kmeans(3)
+k2_d <- df1 %>% filter(vote_question == 'On Agreeing to the Amendment')%>% group_by(rollnumber) %>% summarise(nom = mean(nominate_mid_1, na.rm = T), yes = mean(yea_count)) %>% select(nom, yes)
+k2_c <- k2_d %>% mutate(cluster = as.factor(k2$cluster))
+k2_c %>% ggplot(aes(nom, yes, color = cluster)) + geom_point() + ggtitle("Amendment 'Yea' votes vs Nominate Score") + xlab("Amendment Nominate Score") + ylab('Number of Yea Votes')
+```
+
+The second cluster analysis looked at votes on amendments to legislation, specifically comparing the number of 'yea' votes vs. the nominate score of the amendment. Here, 3 clusters were created: widely passed votes (top cluster), competitive votes (middle cluster), and widely failed votes (bottom cluster). I expected to see that the most conservative and liberal amendments would both fail, and that moderate amendments were most likely to have the highest number of 'yea' votes. This didn't exactly happen. Widely failed votes tend to be more liberal than Widely passed cluster votes. The partisan balance in the House is 235-197 Democratic, which can be seen above: Most of the points in the failed votes cluster have about 190 yea votes, these are almost certainly Republican amendments failed on a party-line vote. The competitive votes (middle cluster) in large part are in the 230-240 vote range, which indicate passage on a party-line vote. The widely passed cluster (300-400 yeas) are likely procedural amendments, or relate to bipartisan aims, since both parties would have to vote in favor to get those numbers: this is likely why these have more conservative nominate scores, since Republicans also voted on them. Failed (bottom cluster) votes with 100-150 yeas were likely too conservative even for moderate Republicans, and the few highly liberal failures seen in the failed cluster (in the bottom left) were likely progressive amendments that weren't approved by more centrist Democrats.
