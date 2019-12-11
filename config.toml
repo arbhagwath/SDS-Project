@@ -21,12 +21,8 @@ theme = "hugo-sustain"
 
 [params.social]
   Github        = "username"
-  Email         = "arbhagwath@gmail.com"
-  Twitter       = "username"
+  Email         = "arbhagwath@gmail.com"  
   LinkedIn      = "username"
-  Stackoverflow = "username"
-  Medium        = "username"
-  Telegram      = "username"
 
 ## Main Menu
 [[menu.main]]
