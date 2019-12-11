@@ -1,0 +1,39 @@
+---
+title: "Resume"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Resume
+
+#Ankur Santosh Bhagwath
+arbhagwath@gmail.com
+469-422-1439
+
+#Summary
+I have attained substantial levels of laboratory experience in a cell biology lab, and have multiple publications in the field of esophageal cancer research. Additionally, I have moderate levels of coding experience in R, Java and Python.
+
+#Educational Qualifications
+ -University of Texas at Austin
+  - BSA Biochemistry, 2021
+  - GPA 3.99
+  
+#Work Experience
+ -Cancer Research Laboratory, UTSW/VA Medical Centre
+  - May 2018 to Present
+  - 40 hrs/wk, Summers
+  - Internship in a laboratory studying treatments for esophageal cancer in general and Barett's esophagus specifically. Conducted long-term experiments, in vitro drug trials, with results of these procedures being published and used as figures in major scientific journals. 
+  
+ -Teaching Assistant, University of Texas
+  - August 2019 to Present
+  - 10 hrs/wk
+   - Undergraduate Teaching Assistant for science courses, assisting students in understanding and learning material as directed by the professor, as well as assisting professor in classroom tasks. 
+   
+
+  
+  
+
+
