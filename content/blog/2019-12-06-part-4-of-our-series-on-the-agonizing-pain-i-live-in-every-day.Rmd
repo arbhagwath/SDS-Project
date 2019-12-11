@@ -10,5 +10,6 @@ description: 'welp'
 
 ## Blog Post
 
-This is Moleman in the morning. Good moleman to you.
+This is Moleman in the morning. Good moleman to you. Welcome back to part 4 of our ongoing series on the agonizing pain I live in every daaayyyy.
 
+ 
