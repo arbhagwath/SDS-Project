@@ -6,10 +6,29 @@
     <description>Recent content on Ankur Bhagwath</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 10 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Comparing R to Python</title>
+      <link>/blog/comparing-r-to-python/</link>
+      <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/comparing-r-to-python/</guid>
+      <description>Hello! Today, we’ll be looking at the differences in R and Python to do simple statistical tasks.At first, it might seem to be a little scary:But it’s really not! Just like a raccoon at night, what appears to be scary is actually quite docile.First, we want to bring in the Reticulate package, to convert between R and Python: among other packages.
+library(reticulate)## Warning: package &amp;#39;reticulate&amp;#39; was built under R version 3.</description>
+    </item>
+    
+    <item>
+      <title>Comparing R to Python</title>
+      <link>/2019/12/14/comparing-r-to-python/</link>
+      <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/14/comparing-r-to-python/</guid>
+      <description>Hello! Today, we’ll be looking at the differences in R and Python to do simple statistical tasks.At first, it might seem to be a little scary:But it’s not that hard!</description>
+    </item>
     
     <item>
       <title>Resume</title>
@@ -20,17 +39,6 @@
       <description>ResumeAnkur Santosh Bhagwatharbhagwath@gmail.com469-422-1439
 SummaryI have attained substantial levels of laboratory experience in a cell biology lab, and have multiple publications in the field of esophageal cancer research. Additionally, I have moderate levels of coding experience in R, Java and Python.
 InterestsProgramming, hiking and reading are my great passions. I look forward to applying analytical skills towards solving a diverse array of challenges.</description>
-    </item>
-    
-    <item>
-      <title>On Python vs R</title>
-      <link>/blog/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-daayyyy/</link>
-      <pubDate>Fri, 06 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-daayyyy/</guid>
-      <description>Blog PostThis is Moleman in the morning. Good moleman to you. Welcome back to part 4 of our ongoing series on the agonizing pain I live in every daaayyyy.
-Just kidding. In this post, we’ll be examining the key differences in doing basic statistical analysis in R vs Python.
-</description>
     </item>
     
     <item>
@@ -78,8 +86,8 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <pubDate>Wed, 25 Dec 1991 00:00:00 +0000</pubDate>
       
       <guid>/projects/</guid>
-      <description>Projects PageExploratory Data Analysis of US Partisanship
-Statistical Modeling of U.S. Individual Census Data, 1994
+      <description>Projects PageProject 1: Exploratory Data Analysis of US Partisanship
+Project 2: Statistical Modeling of U.S. Individual Census Data, 1994
 </description>
     </item>
     

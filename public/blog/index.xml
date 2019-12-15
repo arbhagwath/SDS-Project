@@ -6,20 +6,19 @@
     <description>Recent content in Blogs on Ankur Bhagwath</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 06 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>On Python vs R</title>
-      <link>/blog/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-daayyyy/</link>
-      <pubDate>Fri, 06 Dec 2019 00:00:00 +0000</pubDate>
+      <title>Comparing R to Python</title>
+      <link>/blog/comparing-r-to-python/</link>
+      <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/blog/part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-daayyyy/</guid>
-      <description>Blog PostThis is Moleman in the morning. Good moleman to you. Welcome back to part 4 of our ongoing series on the agonizing pain I live in every daaayyyy.
-Just kidding. In this post, we’ll be examining the key differences in doing basic statistical analysis in R vs Python.
-</description>
+      <guid>/blog/comparing-r-to-python/</guid>
+      <description>Hello! Today, we’ll be looking at the differences in R and Python to do simple statistical tasks.At first, it might seem to be a little scary:But it’s really not! Just like a raccoon at night, what appears to be scary is actually quite docile.First, we want to bring in the Reticulate package, to convert between R and Python: among other packages.
+library(reticulate)## Warning: package &amp;#39;reticulate&amp;#39; was built under R version 3.</description>
     </item>
     
     <item>

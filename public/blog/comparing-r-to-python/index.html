@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ankur Bhagwath" />
+    <meta name="description" content="Hi">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Comparing R to Python</title>
+    <meta name="generator" content="Hugo 0.60.1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/blog/comparing-r-to-python/">Comparing R to Python</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          December 14, 2019
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<p>Hello! Today, we’ll be looking at the differences in R and Python to do simple statistical tasks.
+At first, it might seem to be a little scary:
+<img src="/blog/2019-12-14-comparing-r-to-python_files/20180210_002657.jpg" />
+But it’s really not! Just like a raccoon at night, what appears to be scary is actually quite docile.
+First, we want to bring in the Reticulate package, to convert between R and Python: among other packages.</p>
+<pre class="r"><code>library(reticulate)</code></pre>
+<pre><code>## Warning: package &#39;reticulate&#39; was built under R version 3.5.3</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<p>We’ll use this in a bit. First off, Python has the ability to do basic functions more easily, and with pipes:</p>
+<pre class="r"><code>use_python(&quot;C://Users/arbha/Anaconda3/python.exe&quot;)
+a &lt;- 1:10
+fivenum(a)</code></pre>
+<pre><code>## [1]  1.0  3.0  5.5  8.0 10.0</code></pre>
+<pre class="r"><code>faithful &lt;- read.csv(&quot;https://vincentarelbundock.github.io/Rdatasets/csv/datasets/faithful.csv&quot;)
+mean(faithful$waiting)</code></pre>
+<pre><code>## [1] 70.89706</code></pre>
+<pre class="r"><code>faithful %&gt;% filter(waiting &lt; median(waiting)) %&gt;% summarise(m = mean(waiting))</code></pre>
+<pre><code>##          m
+## 1 59.27612</code></pre>
+<p>In Python, it’s a bit more complicated:</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+print(np.mean(r.a))</code></pre>
+<pre><code>## 5.5</code></pre>
+<pre class="python"><code>r.faithful[r.faithful.waiting &lt; np.median(r.faithful.waiting)].waiting.mean()</code></pre>
+<pre><code>## 59.276119402985074</code></pre>
+<p>It’s a bit less intuitive with the setup, but the results are much the same. Notice that while using reticulate, we can access items from R in Python. We can do the reverse in R, if we import the same dataset in python:</p>
+<pre class="python"><code>faith2 = r.faithful</code></pre>
+<p>And in R:</p>
+<pre class="r"><code>py$faith2 %&gt;% filter(waiting &lt; median(waiting)) %&gt;% summarise(m = mean(waiting))</code></pre>
+<pre><code>##          m
+## 1 59.27612</code></pre>
+<p>And we get the same result!
+There are other nice things that can be done primarily using packages in python, for example, the findall function to find all 3 digit numbers in the list below:</p>
+<pre class="python"><code>import re
+str1 = &quot;23,26,454,17,99,851,63,124,90,42,456,7,984&quot;
+re.findall(r&#39;\d+\d+\d&#39;,str1)
+</code></pre>
+<pre><code>## [&#39;454&#39;, &#39;851&#39;, &#39;124&#39;, &#39;456&#39;, &#39;984&#39;]</code></pre>
+<p>Another thing you may find Python more convenient for is the use of for loops. These can be used in making scoring algorithms to determine sequence matching. For example, a Smith-Waterman algorithm is shown below (courtesy of Dr. Woodward):</p>
+<pre class="python"><code>match_score = 2
+mismatch_score = -1
+gap_penalty = 0
+
+seq1 = &quot;TAGATA&quot;
+seq2 = &quot;AAGGATA&quot;
+
+def sw_fun(seq1,seq2,gap_penalty=-1, match_score=1, mismatch_score=-1):
+    m=len(seq1) #length of horizontal sequence
+    n=len(seq2) #length of vertical sequence
+    score=np.empty(shape=[n+1,m+1]) #array to hold scores
+   
+    for j in range(0, m + 1): 
+        score[0][j] = gap_penalty * j
+    for i in range(0, n + 1): 
+        score[i][0] = gap_penalty * i
+    
+    for i in range(1, n + 1): 
+        for j in range(1, m + 1):
+            insert = max(score[i - 1][j] + gap_penalty, 0)
+            delete = max(score[i][j - 1] + gap_penalty, 0) 
+            match = max(score[i - 1][j - 1] + match_score if seq1[j-1]==seq2[i-1] else score[i-1][j-1]+ mismatch_score, 0)
+            score[i][j] = max(match, delete, insert)
+            
+    for j in range(0, m + 1): 
+        score[0][j] = max(gap_penalty * j, 0)
+    for i in range(0, n + 1): 
+        score[i][0] = max(gap_penalty * i, 0)
+    return score
+
+sw_fun(seq1,seq2,gap_penalty,match_score,mismatch_score)</code></pre>
+<pre><code>## array([[ 0.,  0.,  0.,  0.,  0.,  0.,  0.],
+##        [ 0.,  0.,  2.,  2.,  2.,  2.,  2.],
+##        [ 0.,  0.,  2.,  2.,  4.,  4.,  4.],
+##        [ 0.,  0.,  2.,  4.,  4.,  4.,  4.],
+##        [ 0.,  0.,  2.,  4.,  4.,  4.,  4.],
+##        [ 0.,  0.,  2.,  4.,  6.,  6.,  6.],
+##        [ 0.,  2.,  2.,  4.,  6.,  8.,  8.],
+##        [ 0.,  2.,  4.,  4.,  6.,  8., 10.]])</code></pre>
+<p>In conclusion, R may be designed specially for statistical programming, but a lot of interesting stuff can be done with Python as well!</p>
+
+
+
+          <hr>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

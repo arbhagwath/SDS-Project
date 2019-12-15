@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Ankur Bhagwath</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 06 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Comparing R to Python</title>
+      <link>/2019/12/14/comparing-r-to-python/</link>
+      <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/14/comparing-r-to-python/</guid>
+      <description>Hello! Today, we’ll be looking at the differences in R and Python to do simple statistical tasks.At first, it might seem to be a little scary:But it’s not that hard!</description>
+    </item>
     
     <item>
       <title>Part 4 of our series on the agonizing pain I live in every day</title>
