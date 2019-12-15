@@ -11,6 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Projects Page
 
-[Project 1 Exploratory Data Analysis of US Partisanship](/Project_1_Report)
+[Project 1: Exploratory Data Analysis of US Partisanship](/Project_1_Report)
 
-[Project 2 Statistical Modeling of U.S. Individual Census Data, 1994](/Project2)
+[Project 2: Statistical Modeling of U.S. Individual Census Data, 1994](/Project2)
