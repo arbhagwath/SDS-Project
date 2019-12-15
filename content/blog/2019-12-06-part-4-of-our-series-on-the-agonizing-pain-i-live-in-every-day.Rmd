@@ -1,15 +1,18 @@
 ---
-title: Part 4 of our series on the agonizing pain I live in every day
+title: On Python vs R
 author: 'Hans Moleman'
 date: '2019-12-06'
-slug: part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-day
+slug: part-4-of-our-series-on-the-agonizing-pain-i-live-in-every-daayyyy
 categories: []
 tags: []
-description: 'welp'
+description: ''
 ---
 
 ## Blog Post
 
 This is Moleman in the morning. Good moleman to you. Welcome back to part 4 of our ongoing series on the agonizing pain I live in every daaayyyy.
+
+Just kidding. In this post, we'll be examining the key differences in doing basic statistical analysis in R vs Python. 
+
 
  
